@@ -346,7 +346,7 @@ def main():
     # 主标题
     st.markdown("""
     <div class="main-header">
-        <h1>🦜🔗 动手学大模型应用开发</h1>
+        <h1>🐖 CRR IS PIG</h1>
         <p>基于 RAG 技术的智能知识库问答系统 · 支持多轮对话</p>
     </div>
     """, unsafe_allow_html=True)
