@@ -41,16 +41,24 @@ class ZhipuAIEmbeddings(Embeddings):
         """为文档列表生成向量"""
         result = []
         for i in range(0, len(texts), 64):
-            response = self.client.embeddings.create(
-                model=self.model,
-                input=texts[i:i+64]
-            )
-            # 提取每个 item 中的 embedding 属性
-            result.extend([item.embedding for item in response.data])
+            try:
+                response = self.client.embeddings.create(
+                    model=self.model,
+                    input=texts[i:i+64]
+                )
+                # 提取每个 item 中的 embedding 属性
+                result.extend([item.embedding for item in response.data])
+            except Exception as e:
+                # 捕获智谱 API 额度/限流等异常，抛出清晰、可读性强的友好提示
+                err_msg = str(e)
+                if "APIReachLimitError" in err_msg or "limit" in err_msg.lower() or "quota" in err_msg.lower() or "429" in err_msg or "1113" in err_msg:
+                    raise RuntimeError(
+                        "智谱 AI 接口额度超限 (APIReachLimitError: 余额不足或无可用资源包，请充值)。请登录智谱开放平台检查账户余额。"
+                    ) from None
+                raise RuntimeError(f"智谱 AI 向量生成失败: {err_msg}") from None
         return result
     
     def embed_query(self, text: str) -> List[float]:
         """为查询文本生成向量"""
         # 直接调用 embed_documents 处理单条文本
         return self.embed_documents([text])[0]
-
