@@ -73,7 +73,7 @@ st.markdown("""
 
 /* 聊天容器 */
 [data-testid="stVerticalBlock"] > div:has([data-testid="stChatMessage"]) {
-    background: #ffffff;
+    background: black;
     border-radius: 16px;
     padding: 1rem;
     box-shadow: 0 4px 16px rgba(0,0,0,0.08);
@@ -86,6 +86,12 @@ st.markdown("""
     border-radius: 12px;
     margin: 0.4rem 0;
     padding: 0.5rem;
+    color: black !important;   /* 新增 */
+}
+
+/* 用户消息文字 */
+[data-testid="stChatMessage"][data-role="human"] * {
+    color: black !important;   /* 新增 */
 }
 
 /* AI 消息气泡 */
@@ -96,6 +102,13 @@ st.markdown("""
     border-radius: 12px;
     margin: 0.4rem 0;
     padding: 0.5rem;
+    color: black !important;   /* 新增 */
+}
+
+/* AI 消息文字 */
+[data-testid="stChatMessage"][data-role="ai"] *,
+[data-testid="stChatMessage"][data-role="assistant"] * {
+    color: black !important;   /* 新增 */
 }
 
 /* 输入框样式 */
