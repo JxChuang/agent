@@ -171,7 +171,9 @@ st.markdown("""
 
 def get_retriever():
     """定义get_retriever函数，该函数返回一个检索器"""
-    embedding = ZhipuAIEmbeddings()
+    _ = load_dotenv(find_dotenv())
+    ZHIPUAI_API_KEY = os.environ["ZHIPUAI_API_KEY"]
+    embedding = ZhipuAIEmbeddings(api_key=ZHIPUAI_API_KEY)
     # ✅ 修复BUG3: 使用相对于当前脚本的绝对路径，避免工作目录不同导致路径错误
     base_dir = os.path.dirname(os.path.abspath(__file__))
     persist_directory = os.path.join(base_dir, '..', 'data_base', 'vector_db', 'chroma')
