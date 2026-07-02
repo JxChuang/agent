@@ -4,6 +4,7 @@ langchain-text-splitters
 langchain-core
 langchain-openai
 langchain-chroma
+chromadb
 python-dotenv
 spark-ai-python
 zhipuai
