@@ -383,15 +383,20 @@ def main():
         # 生成并流式输出回复
         with messages.chat_message("ai"):
             with st.spinner("🤔 正在思考..."):
-                answer = gen_response(
-                    chain=st.session_state.qa_history_chain,
-                    input=prompt,
-                    chat_history=st.session_state.messages
-                )
-                output = st.write_stream(answer)
-
-        # 存入历史
-        st.session_state.messages.append(("ai", output))
+                try:
+                    answer = gen_response(
+                        chain=st.session_state.qa_history_chain,
+                        input=prompt,
+                        chat_history=st.session_state.messages
+                    )
+                    output = st.write_stream(answer)
+                    # 存入历史
+                    st.session_state.messages.append(("ai", output))
+                except Exception as e:
+                    # 发生错误时，移除最后添加的用户消息，避免产生无效历史记录
+                    if st.session_state.messages and st.session_state.messages[-1][0] == "human" and st.session_state.messages[-1][1] == prompt:
+                        st.session_state.messages.pop()
+                    st.error(f"❌ 思考失败：{e}")
 
 
 # ✅ 修复BUG6: 确保 main() 在脚本入口被调用
